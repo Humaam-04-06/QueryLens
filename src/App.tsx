@@ -51,7 +51,7 @@ WHERE Customers.Country = 'Pakistan';`);
       const rewrite = generateSuggestedQuery(result, activeSchema);
       setSuggestedQuery(rewrite);
 
-      const recs = generateIndexRecommendations(result, dialect);
+      const recs = generateIndexRecommendations(result, dialect, activeSchema);
       setIndexRecs(recs);
 
       const plan = buildExecutionPlan(result, activeSchema, isOptimizedPlanView);
@@ -172,6 +172,7 @@ WHERE Customers.Country = 'Pakistan';`);
         {indexRecs.length > 0 && (
           <IndexAdvisorCard
             recommendations={indexRecs}
+            dialect={dialect}
             onToggleSimulator={handleToggleSimulator}
           />
         )}
