@@ -8,9 +8,7 @@ import {
   faMicrochip, 
   faTable, 
   faFilter, 
-  faLightbulb,
-  faChartLine,
-  faLayerGroup
+  faLightbulb
 } from '@fortawesome/free-solid-svg-icons';
 
 interface NodeInspectorProps {
