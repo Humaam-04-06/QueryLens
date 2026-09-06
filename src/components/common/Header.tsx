@@ -1,7 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
-  faDatabase, 
   faTableList, 
   faFileArrowDown,
   faCircleCheck,
@@ -10,6 +9,7 @@ import {
   faLayerGroup
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
+import { QueryLensLogo } from './QueryLensLogo';
 
 interface HeaderProps {
   onToggleSchema: () => void;
@@ -36,9 +36,7 @@ export const Header: React.FC<HeaderProps> = ({
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-dark-950/85 backdrop-blur-md px-4 lg:px-6 py-3 flex items-center justify-between transition-all">
       {/* Brand & Identity */}
       <div className="flex items-center gap-3.5">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-sky-500 via-indigo-600 to-purple-600 flex items-center justify-center text-white shadow-glow-cyan">
-          <FontAwesomeIcon icon={faDatabase} className="text-sm" />
-        </div>
+        <QueryLensLogo size="md" animate={true} />
         <div>
           <div className="flex items-center gap-2">
             <span className="font-extrabold text-base lg:text-lg tracking-tight bg-gradient-to-r from-sky-400 via-indigo-300 to-purple-400 bg-clip-text text-transparent">
@@ -53,7 +51,7 @@ export const Header: React.FC<HeaderProps> = ({
             </span>
           </div>
           <p className="text-[11px] text-slate-400 hidden sm:block">
-            SQL Static Analysis, Execution Plan Visualizer & Index Advisor
+            SQL Static Analysis, Execution Plan Visualizer &amp; Index Advisor
           </p>
         </div>
       </div>
