@@ -51,6 +51,11 @@
 - **Starred Bookmarks**: Star critical queries into a dedicated bookmarks tab for regression testing.
 - **Instant Query Restoration**: One-click **"Load Query"** button restores queries, dialects, and schema catalogs into the editor.
 
+### 8. 📂 Multi-Query Batch Profiler & SQL File Uploader
+- **Native SQL File Ingestion**: Upload `.sql` and `.txt` files directly via drag-and-drop or file picker (up to 5MB) into either the batch profiler or the main SQL editor console.
+- **Holistic Workload Health**: Profiles entire database migration scripts, calculating average query costs, cumulative scan volumes, and workload health ratings.
+- **Bottleneck Rankings & Consolidation**: Ranks queries by cost risk with one-click workbench inspection and generates unified, deduplicated index recommendations across the whole workload.
+
 ---
 
 ## 🛠️ Technology Stack
