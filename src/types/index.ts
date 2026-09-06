@@ -76,8 +76,14 @@ export interface ExecutionPlanNode {
   operator: 'Seq Scan' | 'Index Scan' | 'Index Seek' | 'Hash Join' | 'Nested Loop' | 'Sort' | 'Aggregate' | 'Filter' | 'Limit' | 'Output';
   cost: number;
   estimatedRows: number;
+  outputRows?: number;
+  ioCost?: number;
+  cpuCost?: number;
+  complexity?: 'O(1)' | 'O(log N)' | 'O(N)' | 'O(N log N)' | 'O(N × M)';
   table?: string;
   filter?: string;
+  details?: string;
+  recommendation?: string;
   isBottleneck?: boolean;
   children?: ExecutionPlanNode[];
 }
