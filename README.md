@@ -1,13 +1,18 @@
 # 🔍 QueryLens — Database Query Optimizer & Execution Plan Visualizer
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-QueryLens%20App-0ea5e9?style=for-the-badge&logo=googlechrome&logoColor=white)](https://humaam-04-06.github.io/QueryLens/)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-18.3-61dafb.svg?logo=react&logoColor=white)](https://react.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38bdf8.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![Vite](https://img.shields.io/badge/Vite-6.2-646cff.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Deployment](https://img.shields.io/badge/Deployed%20to-GitHub%20Pages-22c55e.svg?logo=github&logoColor=white)](https://humaam-04-06.github.io/QueryLens/)
 [![Author](https://img.shields.io/badge/Author-Humaam--04--06-8b5cf6.svg)](https://github.com/Humaam-04-06)
 
 > **QueryLens** is an intelligent SQL query static analysis, cost estimation, automated rewrite, index recommendation, and interactive query execution plan visualization platform. It diagnoses query performance bottlenecks before they hit production databases, providing concrete query rewrites, index recommendations, and visual execution trees.
+>
+> 🌐 **Live Web Application**: [https://humaam-04-06.github.io/QueryLens/](https://humaam-04-06.github.io/QueryLens/)
+
 
 ---
 
@@ -136,7 +141,27 @@ Then click **"Simulate Index"** or **"Apply to Editor"** to observe:
 
 ---
 
+## 🚀 Live Deployment & CI/CD Pipeline
+
+QueryLens includes automated deployment directly to **GitHub Pages**:
+
+```bash
+npm run deploy
+```
+
+This single command:
+1. Compiles the TypeScript codebase and builds optimized production bundles with Vite (`GITHUB_PAGES=true` to configure the base path `/QueryLens/`).
+2. Creates `.nojekyll` and `404.html` SPA routing fallbacks.
+3. Automatically publishes the distribution bundle to the `gh-pages` branch on GitHub.
+
+🌐 **Live Application URL**: **[https://humaam-04-06.github.io/QueryLens/](https://humaam-04-06.github.io/QueryLens/)**
+
+Pre-configured GitHub Actions CI/CD workflow templates are available in the [`deploy/workflows/`](file:///d:/Database_Query_Optimizer/deploy/workflows/) directory.
+
+---
+
 ## 👤 Author & Contribution
 
 Developed with ❤️ by **[Humaam-04-06](https://github.com/Humaam-04-06)**.  
 Repository: **[https://github.com/Humaam-04-06/QueryLens](https://github.com/Humaam-04-06/QueryLens)**
+
