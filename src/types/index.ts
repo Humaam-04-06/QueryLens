@@ -50,11 +50,17 @@ export interface IndexRecommendation {
   id: string;
   table: string;
   columns: string[];
+  includedColumns?: string[];
   type: 'B-TREE' | 'COMPOSITE' | 'COVERING';
   ddl: string;
   reason: string;
   estimatedImprovementPct: number;
   isActiveInSimulation: boolean;
+  dialect: QueryDialect;
+  rowsExaminedReduction?: {
+    before: number;
+    after: number;
+  };
 }
 
 export interface SuggestedQuery {
