@@ -33,6 +33,8 @@
   - [8. Multi-Query Batch Profiler & Native SQL File Uploader](#8--multi-query-batch-profiler--native-sql-file-uploader)
   - [9. Multi-Schema Database Catalog Switcher](#9--multi-schema-database-catalog-switcher)
   - [10. Automated CI/CD & Live GitHub Pages Deployment](#10--automated-cicd--live-github-pages-deployment)
+  - [11. Query Permalinks & Collaborative URL Sharing](#11--query-permalinks--collaborative-url-sharing)
+  - [12. Power-User Keyboard Shortcuts & Toast System](#12-️-power-user-keyboard-shortcuts--toast-system)
 - [🛠️ Technology Stack](#️-technology-stack)
 - [🚀 How to Run and Test This Project Locally](#-how-to-run-and-test-this-project-locally)
   - [Prerequisites](#prerequisites)
@@ -151,6 +153,22 @@ Then QueryLens provides:
 ### 10. 🌐 Automated CI/CD & Live GitHub Pages Deployment
 - Optimized Vite build with multi-chunk code splitting (`vendor`, `icons`, `sql-parser`, `diagram`).
 - One-command automated deployment script (`npm run deploy`) publishing to GitHub Pages at [https://humaam-04-06.github.io/QueryLens/](https://humaam-04-06.github.io/QueryLens/).
+
+### 11. 🔗 Query Permalinks & Collaborative URL Sharing
+- **Instant Query Hash Encoding**: Click the **Share** button in the header toolbar to encode the active SQL query, selected dialect, and active database catalog into a shareable URL permalink.
+- **Zero-Friction Team Collaboration**: When teammates open the permalink, QueryLens automatically decodes the hash and restores the exact query, dialect, and schema context into their workbench with an interactive notification toast.
+
+### 12. ⌨️ Power-User Keyboard Shortcuts & Toast System
+- **Comprehensive Keybinding Suite**:
+  - `Ctrl + Enter`: Analyze & optimize active SQL query.
+  - `Ctrl + Shift + F`: Beautify and indent SQL statements.
+  - `Ctrl + Shift + H`: Toggle persistent query history and bookmarks drawer.
+  - `Ctrl + Shift + S`: Toggle database schema explorer and table inspector.
+  - `Ctrl + Shift + B`: Open multi-query batch profiler and SQL file uploader.
+  - `Ctrl + Shift + E`: Export executive Markdown optimization audit report.
+  - `?`: Open keyboard shortcuts reference modal anytime.
+  - `Esc`: Instantly dismiss active modals and slide-over drawers.
+- **Micro-Interaction Toasts**: Non-intrusive glassmorphic toast notifications providing real-time feedback on permalink copy, rewrite application, and file operations.
 
 ---
 
