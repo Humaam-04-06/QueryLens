@@ -126,3 +126,6 @@ export interface BenchmarkMetrics {
     optimized: number;
   };
 }
+
+export * from './history';
+
