@@ -128,4 +128,6 @@ export interface BenchmarkMetrics {
 }
 
 export * from './history';
+export * from './batch';
+
 
