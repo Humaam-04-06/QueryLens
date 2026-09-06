@@ -1,11 +1,15 @@
 /**
- * Automated GitHub Pages Deployment Script
+ * Automated GitHub Pages Deployment Script (ESM)
  * Builds production assets and publishes them to the gh-pages branch.
  */
 
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const rootDir = path.resolve(__dirname, '..');
 const distDir = path.resolve(rootDir, 'dist');
