@@ -1,13 +1,17 @@
-# 🔍 QueryLens — Database Query Optimizer & Execution Plan Visualizer
+<div align="center">
+  <img src="public/logo.svg" alt="QueryLens Logo" width="440" />
+  <br />
+  <p><strong>Intelligent SQL Query Static Analysis, Cost Estimation &amp; Execution Plan Visualizer</strong></p>
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-QueryLens%20App-0ea5e9?style=for-the-badge&logo=googlechrome&logoColor=white)](https://humaam-04-06.github.io/QueryLens/)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![React](https://img.shields.io/badge/React-18.3-61dafb.svg?logo=react&logoColor=white)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38bdf8.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
-[![Vite](https://img.shields.io/badge/Vite-6.2-646cff.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
-[![Deployment](https://img.shields.io/badge/Deployed%20to-GitHub%20Pages-22c55e.svg?logo=github&logoColor=white)](https://humaam-04-06.github.io/QueryLens/)
-[![Author](https://img.shields.io/badge/Author-Humaam--04--06-8b5cf6.svg)](https://github.com/Humaam-04-06)
+  [![Live Demo](https://img.shields.io/badge/Live%20Demo-QueryLens%20App-0ea5e9?style=for-the-badge&logo=googlechrome&logoColor=white)](https://humaam-04-06.github.io/QueryLens/)
+  [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+  [![React](https://img.shields.io/badge/React-18.3-61dafb.svg?logo=react&logoColor=white)](https://react.dev)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178c6.svg?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+  [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38bdf8.svg?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+  [![Vite](https://img.shields.io/badge/Vite-6.2-646cff.svg?logo=vite&logoColor=white)](https://vitejs.dev/)
+  [![Deployment](https://img.shields.io/badge/Deployed%20to-GitHub%20Pages-22c55e.svg?logo=github&logoColor=white)](https://humaam-04-06.github.io/QueryLens/)
+  [![Author](https://img.shields.io/badge/Author-Humaam--04--06-8b5cf6.svg)](https://github.com/Humaam-04-06)
+</div>
 
 > **QueryLens** is an intelligent SQL query static analysis, cost estimation, automated rewrite, index recommendation, execution plan DAG visualizer, and in-browser benchmarking platform. It identifies and fixes query bottlenecks before they hit production databases.
 >
