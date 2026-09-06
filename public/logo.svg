@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 64" fill="none">
+  <defs>
+    <!-- Background Gradient for Icon Mark -->
+    <linearGradient id="logoBgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="50%" stop-color="#090d16" />
+      <stop offset="100%" stop-color="#020617" />
+    </linearGradient>
+
+    <!-- Border Glow Gradient -->
+    <linearGradient id="logoBorderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.8" />
+      <stop offset="50%" stop-color="#6366f1" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#a855f7" stop-opacity="0.8" />
+    </linearGradient>
+
+    <!-- Text & Mark Gradients -->
+    <linearGradient id="primaryTextGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <linearGradient id="dbGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0284c7" />
+      <stop offset="50%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#9333ea" />
+    </linearGradient>
+
+    <linearGradient id="lensGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8" />
+      <stop offset="50%" stop-color="#818cf8" />
+      <stop offset="100%" stop-color="#c084fc" />
+    </linearGradient>
+
+    <linearGradient id="glassGrad" x1="20%" y1="20%" x2="80%" y2="80%">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.35" />
+      <stop offset="60%" stop-color="#818cf8" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#c084fc" stop-opacity="0.25" />
+    </linearGradient>
+
+    <filter id="logoGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- ICON MARK (Left) -->
+  <g transform="translate(4, 4)">
+    <!-- Squircle Container -->
+    <rect x="0" y="0" width="56" height="56" rx="14" fill="url(#logoBgGrad)" stroke="url(#logoBorderGrad)" stroke-width="1.5" />
+
+    <!-- Database Stack -->
+    <g opacity="0.85">
+      <!-- Bottom Disk -->
+      <path d="M10 35 C10 39 19 40.5 25 40.5 C31 40.5 40 39 40 35 V38 C40 42 31 43.5 25 43.5 C19 43.5 10 42 10 38 Z" fill="url(#dbGrad)" opacity="0.6" />
+      <ellipse cx="25" cy="35" rx="15" ry="4" fill="#1e293b" stroke="url(#dbGrad)" stroke-width="1" />
+
+      <!-- Middle Disk -->
+      <path d="M10 27 C10 31 19 32.5 25 32.5 C31 32.5 40 31 40 27 V30 C40 34 31 35.5 25 35.5 C19 35.5 10 34 10 30 Z" fill="url(#dbGrad)" opacity="0.75" />
+      <ellipse cx="25" cy="27" rx="15" ry="4" fill="#0f172a" stroke="url(#dbGrad)" stroke-width="1" />
+
+      <!-- Top Disk -->
+      <path d="M10 19 C10 23 19 24.5 25 24.5 C31 24.5 40 23 40 19 V22 C40 26 31 27.5 25 27.5 C19 27.5 10 26 10 22 Z" fill="url(#dbGrad)" opacity="0.9" />
+      <ellipse cx="25" cy="19" rx="15" ry="4" fill="#1e1b4b" stroke="url(#dbGrad)" stroke-width="1.2" />
+    </g>
+
+    <!-- Magnifying Focus Lens -->
+    <g filter="url(#logoGlow)">
+      <circle cx="33" cy="28" r="13" fill="url(#glassGrad)" />
+      <path d="M24 20 A10.5 10.5 0 0 1 39 20" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" opacity="0.6" />
+      <circle cx="33" cy="28" r="13" stroke="url(#lensGrad)" stroke-width="2.8" />
+      <path d="M42.5 37.5 L50 45" stroke="url(#lensGrad)" stroke-width="3.5" stroke-linecap="round" />
+      <path d="M42.5 37.5 L50 45" stroke="#ffffff" stroke-width="1" stroke-linecap="round" opacity="0.5" />
+
+      <!-- Reticle / Optimizer Focus -->
+      <circle cx="33" cy="28" r="2.2" fill="#38bdf8" />
+      <path d="M33 22 V25 M33 31 V34 M27 28 H30 M36 28 H39" stroke="#38bdf8" stroke-width="1.2" stroke-linecap="round" />
+      <circle cx="33" cy="28" r="0.9" fill="#ffffff" />
+    </g>
+  </g>
+
+  <!-- TYPOGRAPHY (Right) -->
+  <g transform="translate(74, 0)">
+    <!-- Brand Title: QueryLens -->
+    <text x="0" y="34" font-family="Inter, -apple-system, sans-serif" font-size="26" font-weight="800" letter-spacing="-0.5" fill="url(#primaryTextGrad)">Query<tspan fill="#ffffff">Lens</tspan></text>
+
+    <!-- Badge: OPTIMIZER -->
+    <rect x="136" y="16" width="62" height="18" rx="4" fill="#0284c7" fill-opacity="0.15" stroke="#38bdf8" stroke-opacity="0.4" stroke-width="1" />
+    <text x="167" y="29" font-family="Inter, sans-serif" font-size="9" font-weight="700" letter-spacing="0.8" fill="#38bdf8" text-anchor="middle">OPTIMIZER</text>
+
+    <!-- Subtitle: Database Query & Execution Plan Visualizer -->
+    <text x="0" y="50" font-family="Inter, -apple-system, sans-serif" font-size="10.5" font-weight="500" fill="#94a3b8" letter-spacing="0.2">
+      Database Query Static Analysis &amp; Plan Visualizer
+    </text>
+  </g>
+</svg>
