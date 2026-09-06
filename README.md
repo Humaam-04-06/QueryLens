@@ -46,6 +46,11 @@
 - **Custom DDL Ingestion**: Paste any `CREATE TABLE` and `CREATE INDEX` statements to analyze queries against your own proprietary databases.
 - **Executive Audit Export**: One-click export of complete Markdown optimization reports detailing anti-patterns, recommended rewrites, index DDLs, and telemetry benchmarks for Pull Requests.
 
+### 7. 🕒 Query History & Starred Performance Bookmarks
+- **Session Persistence**: Automatically tracks analyzed queries, cost scores, dialect settings, and relative timestamps via LocalStorage.
+- **Starred Bookmarks**: Star critical queries into a dedicated bookmarks tab for regression testing.
+- **Instant Query Restoration**: One-click **"Load Query"** button restores queries, dialects, and schema catalogs into the editor.
+
 ---
 
 ## 🛠️ Technology Stack
