@@ -6,7 +6,8 @@ import {
   faCircleCheck,
   faKeyboard,
   faClockRotateLeft,
-  faLayerGroup
+  faLayerGroup,
+  faLink
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 import { QueryLensLogo } from './QueryLensLogo';
@@ -16,6 +17,8 @@ interface HeaderProps {
   onToggleHistory: () => void;
   onOpenBatchModal: () => void;
   onExportReport: () => void;
+  onOpenShortcuts?: () => void;
+  onShareQuery?: () => void;
   isSchemaOpen: boolean;
   isHistoryOpen: boolean;
   activeSchemaName: string;
@@ -27,6 +30,8 @@ export const Header: React.FC<HeaderProps> = ({
   onToggleHistory,
   onOpenBatchModal,
   onExportReport,
+  onOpenShortcuts,
+  onShareQuery,
   isSchemaOpen,
   isHistoryOpen,
   activeSchemaName,
@@ -58,14 +63,32 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Right Controls & Quick Actions */}
       <div className="flex items-center gap-2">
-        {/* Keyboard shortcut hint */}
-        <div className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 text-[11px] text-slate-400 bg-dark-900 border border-slate-800 rounded-lg">
-          <FontAwesomeIcon icon={faKeyboard} className="text-slate-500 text-xs" />
-          <span>Execute:</span>
-          <kbd className="px-1 py-0.2 bg-dark-800 rounded border border-slate-700 font-mono text-[10px] text-slate-300">Ctrl</kbd>
-          <span>+</span>
-          <kbd className="px-1 py-0.2 bg-dark-800 rounded border border-slate-700 font-mono text-[10px] text-slate-300">Enter</kbd>
-        </div>
+        {/* Keyboard shortcut trigger */}
+        {onOpenShortcuts && (
+          <button
+            type="button"
+            onClick={onOpenShortcuts}
+            className="hidden xl:flex items-center gap-1.5 px-2.5 py-1 text-[11px] text-slate-400 bg-dark-900 border border-slate-800 rounded-lg hover:border-slate-700 hover:text-slate-200 transition cursor-pointer"
+            title="View Keyboard Shortcuts (?)"
+          >
+            <FontAwesomeIcon icon={faKeyboard} className="text-slate-500 text-xs" />
+            <span>Shortcuts</span>
+            <kbd className="px-1.5 py-0.2 bg-dark-800 rounded border border-slate-700 font-mono text-[10px] text-sky-400">?</kbd>
+          </button>
+        )}
+
+        {/* Share Query Button */}
+        {onShareQuery && (
+          <button
+            type="button"
+            onClick={onShareQuery}
+            className="flex items-center gap-1.5 px-2.5 py-1.5 text-xs font-medium rounded-lg bg-dark-850 hover:bg-dark-800 border border-slate-700/60 text-slate-300 hover:text-sky-300 transition-all"
+            title="Copy Shareable Permalink to Clipboard"
+          >
+            <FontAwesomeIcon icon={faLink} className="text-sky-400 text-xs" />
+            <span className="hidden sm:inline">Share</span>
+          </button>
+        )}
 
         {/* Active Catalog Button */}
         <button
