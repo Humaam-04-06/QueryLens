@@ -124,6 +124,7 @@ WHERE Customers.Country = 'Pakistan';`);
         onToggleSchema={() => setIsSchemaOpen(!isSchemaOpen)}
         onExportReport={handleExportReport}
         isSchemaOpen={isSchemaOpen}
+        activeSchemaName={activeSchema.name}
       />
 
       {/* Main Workspace Layout */}
