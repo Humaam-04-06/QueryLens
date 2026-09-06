@@ -5,22 +5,29 @@ import {
   faTableList, 
   faFileArrowDown,
   faCircleCheck,
-  faKeyboard
+  faKeyboard,
+  faClockRotateLeft
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 interface HeaderProps {
   onToggleSchema: () => void;
+  onToggleHistory: () => void;
   onExportReport: () => void;
   isSchemaOpen: boolean;
+  isHistoryOpen: boolean;
   activeSchemaName: string;
+  historyCount?: number;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   onToggleSchema,
+  onToggleHistory,
   onExportReport,
   isSchemaOpen,
+  isHistoryOpen,
   activeSchemaName,
+  historyCount = 0,
 }) => {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-dark-950/85 backdrop-blur-md px-4 lg:px-6 py-3 flex items-center justify-between transition-all">
@@ -72,6 +79,25 @@ export const Header: React.FC<HeaderProps> = ({
           <FontAwesomeIcon icon={faTableList} className={isSchemaOpen ? 'text-sky-400' : 'text-slate-400'} />
           <span className="hidden sm:inline font-mono">{activeSchemaName.split(' ')[0]}</span>
           <span className="text-[10px] text-slate-500 hidden md:inline">Catalog</span>
+        </button>
+
+        {/* Query History & Bookmarks Button */}
+        <button
+          onClick={onToggleHistory}
+          className={`flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${
+            isHistoryOpen 
+              ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-300 shadow-glow-cyan' 
+              : 'bg-dark-850 border-slate-700/60 text-slate-300 hover:bg-dark-800'
+          }`}
+          title="Open Query History & Starred Bookmarks"
+        >
+          <FontAwesomeIcon icon={faClockRotateLeft} className={isHistoryOpen ? 'text-cyan-400' : 'text-slate-400'} />
+          <span className="hidden sm:inline">History</span>
+          {historyCount > 0 && (
+            <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-cyan-500/15 text-cyan-300 border border-cyan-500/30 font-mono">
+              {historyCount}
+            </span>
+          )}
         </button>
 
         {/* Export Audit Report */}

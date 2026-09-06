@@ -12,6 +12,7 @@ import { Header } from './components/common/Header';
 import { SqlEditor } from './components/editor/SqlEditor';
 import { SchemaExplorerDrawer } from './components/schema/SchemaExplorerDrawer';
 import { CustomSchemaModal } from './components/schema/CustomSchemaModal';
+import { QueryHistoryDrawer } from './components/history/QueryHistoryDrawer';
 import { QueryAnalysisCard } from './components/analysis/QueryAnalysisCard';
 import { CostMeter } from './components/cost/CostMeter';
 import { QueryDiffViewer } from './components/rewrite/QueryDiffViewer';
@@ -23,6 +24,7 @@ import { generateSuggestedQuery } from './engine/rewriter/queryRewriter';
 import { generateIndexRecommendations } from './engine/advisor/indexAdvisor';
 import { buildExecutionPlan } from './engine/planner/planBuilder';
 import { generateAuditReport, downloadReportFile } from './utils/exportReport';
+import { saveHistoryItem, getHistory, subscribeToHistory } from './services/historyStorage';
 
 export function App() {
   const [sql, setSql] = useState<string>(`SELECT *
@@ -34,6 +36,8 @@ WHERE Customers.Country = 'Pakistan';`);
   const [dialect, setDialect] = useState<QueryDialect>('postgresql');
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [isSchemaOpen, setIsSchemaOpen] = useState<boolean>(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [historyCount, setHistoryCount] = useState<number>(() => getHistory().length);
   const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false);
   const [schemas, setSchemas] = useState<SchemaCatalog[]>(defaultSchemas);
   const [activeSchemaId, setActiveSchemaId] = useState<string>('ecommerce');
@@ -45,6 +49,14 @@ WHERE Customers.Country = 'Pakistan';`);
   const [isOptimizedPlanView, setIsOptimizedPlanView] = useState<boolean>(false);
 
   const activeSchema = schemas.find((s) => s.id === activeSchemaId) || schemas[0];
+
+  // Subscribe to history storage changes for reactive badge count
+  useEffect(() => {
+    const unsubscribe = subscribeToHistory((items) => {
+      setHistoryCount(items.length);
+    });
+    return unsubscribe;
+  }, []);
 
   const handleAnalyze = () => {
     setIsAnalyzing(true);
@@ -60,6 +72,17 @@ WHERE Customers.Country = 'Pakistan';`);
 
       const plan = buildExecutionPlan(result, activeSchema, isOptimizedPlanView);
       setExecutionPlan(plan);
+
+      // Automatically persist analysis in query history
+      saveHistoryItem({
+        query: sql,
+        dialect: dialect,
+        catalogId: activeSchema.name,
+        costScore: result.estimatedCost,
+        healthScore: result.score,
+        issueCount: result.issues.length,
+        criticalIssueCount: result.issues.filter((i) => i.severity === 'critical').length,
+      });
 
       setIsAnalyzing(false);
     }, 300);
@@ -127,14 +150,34 @@ WHERE Customers.Country = 'Pakistan';`);
     setActiveSchemaId(newSchema.id);
   };
 
+  const handleLoadQueryFromHistory = (
+    loadedQuery: string,
+    loadedDialect: QueryDialect,
+    loadedCatalogId?: string
+  ) => {
+    setSql(loadedQuery);
+    setDialect(loadedDialect);
+    if (loadedCatalogId) {
+      const found = schemas.find(
+        (s) => s.id === loadedCatalogId || s.name === loadedCatalogId
+      );
+      if (found) {
+        setActiveSchemaId(found.id);
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen bg-dark-950 text-slate-100 flex flex-col">
       {/* Header */}
       <Header
         onToggleSchema={() => setIsSchemaOpen(!isSchemaOpen)}
+        onToggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
         onExportReport={handleExportReport}
         isSchemaOpen={isSchemaOpen}
+        isHistoryOpen={isHistoryOpen}
         activeSchemaName={activeSchema.name}
+        historyCount={historyCount}
       />
 
       {/* Main Workspace Layout */}
@@ -218,7 +261,15 @@ WHERE Customers.Country = 'Pakistan';`);
         onClose={() => setIsImportModalOpen(false)}
         onImportSchema={handleImportSchema}
       />
+
+      {/* Query History & Bookmarks Drawer */}
+      <QueryHistoryDrawer
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+        onLoadQuery={handleLoadQueryFromHistory}
+      />
     </div>
   );
 }
 export default App;
+
