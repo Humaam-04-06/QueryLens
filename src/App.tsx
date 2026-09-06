@@ -13,6 +13,7 @@ import { SqlEditor } from './components/editor/SqlEditor';
 import { SchemaExplorerDrawer } from './components/schema/SchemaExplorerDrawer';
 import { CustomSchemaModal } from './components/schema/CustomSchemaModal';
 import { QueryHistoryDrawer } from './components/history/QueryHistoryDrawer';
+import { BatchWorkloadModal } from './components/batch/BatchWorkloadModal';
 import { QueryAnalysisCard } from './components/analysis/QueryAnalysisCard';
 import { CostMeter } from './components/cost/CostMeter';
 import { QueryDiffViewer } from './components/rewrite/QueryDiffViewer';
@@ -37,6 +38,7 @@ WHERE Customers.Country = 'Pakistan';`);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [isSchemaOpen, setIsSchemaOpen] = useState<boolean>(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
+  const [isBatchModalOpen, setIsBatchModalOpen] = useState<boolean>(false);
   const [historyCount, setHistoryCount] = useState<number>(() => getHistory().length);
   const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false);
   const [schemas, setSchemas] = useState<SchemaCatalog[]>(defaultSchemas);
@@ -167,12 +169,20 @@ WHERE Customers.Country = 'Pakistan';`);
     }
   };
 
+  const handleInspectBatchQuery = (inspectSql: string, inspectDialect: QueryDialect) => {
+    setSql(inspectSql);
+    setDialect(inspectDialect);
+    setIsBatchModalOpen(false);
+    setTimeout(handleAnalyze, 150);
+  };
+
   return (
     <div className="min-h-screen bg-dark-950 text-slate-100 flex flex-col">
       {/* Header */}
       <Header
         onToggleSchema={() => setIsSchemaOpen(!isSchemaOpen)}
         onToggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
+        onOpenBatchModal={() => setIsBatchModalOpen(true)}
         onExportReport={handleExportReport}
         isSchemaOpen={isSchemaOpen}
         isHistoryOpen={isHistoryOpen}
@@ -268,8 +278,18 @@ WHERE Customers.Country = 'Pakistan';`);
         onClose={() => setIsHistoryOpen(false)}
         onLoadQuery={handleLoadQueryFromHistory}
       />
+
+      {/* Multi-Query Batch Workload Profiler Modal */}
+      <BatchWorkloadModal
+        isOpen={isBatchModalOpen}
+        onClose={() => setIsBatchModalOpen(false)}
+        activeSchema={activeSchema}
+        dialect={dialect}
+        onInspectQueryInWorkbench={handleInspectBatchQuery}
+      />
     </div>
   );
 }
 export default App;
+
 

@@ -4,6 +4,7 @@ import { DialectSelector } from './DialectSelector';
 import { SampleQueriesModal } from './SampleQueriesModal';
 import { SampleQuery } from '../../engine/ast/sampleQueries';
 import { formatSql } from '../../utils/formatSql';
+import { SqlFileUploadZone } from '../common/SqlFileUploadZone';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faPlay, 
@@ -76,6 +77,12 @@ export const SqlEditor: React.FC<SqlEditorProps> = ({
             <FontAwesomeIcon icon={faBolt} className="text-amber-400" />
             <span>Sample Queries</span>
           </button>
+
+          {/* Compact Upload .sql File Button */}
+          <SqlFileUploadZone
+            compact
+            onFileLoaded={(content) => onSqlChange(content)}
+          />
 
           <button
             type="button"

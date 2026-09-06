@@ -6,13 +6,15 @@ import {
   faFileArrowDown,
   faCircleCheck,
   faKeyboard,
-  faClockRotateLeft
+  faClockRotateLeft,
+  faLayerGroup
 } from '@fortawesome/free-solid-svg-icons';
 import { faGithub } from '@fortawesome/free-brands-svg-icons';
 
 interface HeaderProps {
   onToggleSchema: () => void;
   onToggleHistory: () => void;
+  onOpenBatchModal: () => void;
   onExportReport: () => void;
   isSchemaOpen: boolean;
   isHistoryOpen: boolean;
@@ -23,6 +25,7 @@ interface HeaderProps {
 export const Header: React.FC<HeaderProps> = ({
   onToggleSchema,
   onToggleHistory,
+  onOpenBatchModal,
   onExportReport,
   isSchemaOpen,
   isHistoryOpen,
@@ -98,6 +101,16 @@ export const Header: React.FC<HeaderProps> = ({
               {historyCount}
             </span>
           )}
+        </button>
+
+        {/* Multi-Query Batch Profiler Button */}
+        <button
+          onClick={onOpenBatchModal}
+          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-dark-850 hover:bg-purple-950/40 border border-slate-700/60 hover:border-purple-500/40 text-slate-300 hover:text-purple-300 transition-all shadow-sm"
+          title="Open Multi-Query Batch & Workload Profiler"
+        >
+          <FontAwesomeIcon icon={faLayerGroup} className="text-purple-400" />
+          <span className="hidden sm:inline">Batch Profiler</span>
         </button>
 
         {/* Export Audit Report */}
