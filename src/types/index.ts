@@ -10,12 +10,27 @@ export interface AnalysisIssue {
   table?: string;
   column?: string;
   remediation?: string;
+  impactCategory?: 'I/O Overhead' | 'CPU Bottleneck' | 'Memory / Temp Table' | 'Network Bandwidth';
+  lineReference?: string;
+}
+
+export interface WhereConditionMeta {
+  raw: string;
+  column?: string;
+  table?: string;
+  tableAlias?: string;
+  operator?: string;
+  value?: string;
+  isFunctionWrapped?: boolean;
+  functionName?: string;
+  hasLeadingWildcard?: boolean;
 }
 
 export interface ResourcePressure {
   cpu: number; // 0 - 100
   io: number;  // 0 - 100
   memory: number; // 0 - 100
+  estimatedScannedRows: number;
 }
 
 export interface AnalysisResult {
