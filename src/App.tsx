@@ -90,6 +90,7 @@ WHERE Customers.Country = 'Pakistan';`);
             cpu: 18,
             io: 15,
             memory: 22,
+            estimatedScannedRows: 420,
           },
         });
         setIsOptimizedPlanView(true);

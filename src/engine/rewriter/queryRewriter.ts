@@ -13,8 +13,8 @@ export function generateSuggestedQuery(
   // 1. Rewrite SELECT * with explicit projection
   if (parsed.hasSelectStar) {
     const recommendedCols: string[] = [];
-    parsed.tables.forEach((tName) => {
-      const tableDef = schema.tables.find((t) => t.name.toLowerCase() === tName.toLowerCase());
+    parsed.tables.forEach((tRef) => {
+      const tableDef = schema.tables.find((t) => t.name.toLowerCase() === tRef.name.toLowerCase());
       if (tableDef) {
         // Pick primary key and 2-3 most common columns
         const colsToInclude = tableDef.columns
@@ -35,8 +35,8 @@ export function generateSuggestedQuery(
 
   // 2. Fix Cartesian products if any
   if (parsed.hasCartesianProduct && parsed.tables.length >= 2) {
-    const t1 = parsed.tables[0];
-    const t2 = parsed.tables[1];
+    const t1 = parsed.tables[0].name;
+    const t2 = parsed.tables[1].name;
     rewritten = `SELECT ${t1}.Id, ${t2}.Name\nFROM ${t1}\nINNER JOIN ${t2} ON ${t1}.CustomerId = ${t2}.Id\nWHERE ${t1}.Status = 'Pending';`;
     changes.push(`Converted implicit comma cross-join to explicit INNER JOIN with ON predicate.`);
   }

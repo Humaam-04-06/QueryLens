@@ -7,8 +7,8 @@ export function buildExecutionPlan(
   isOptimized: boolean = false
 ): ExecutionPlanNode {
   const parsed = parseSqlQuery(analysis.rawSql, analysis.dialect);
-  const primaryTable = parsed.tables[0] || 'Orders';
-  const joinedTable = parsed.tables[1] || 'Customers';
+  const primaryTable = parsed.tables[0]?.name || 'Orders';
+  const joinedTable = parsed.tables[1]?.name || 'Customers';
 
   const t1Def = schema.tables.find(t => t.name.toLowerCase() === primaryTable.toLowerCase());
   const t2Def = schema.tables.find(t => t.name.toLowerCase() === joinedTable.toLowerCase());
