@@ -2,7 +2,7 @@ import { BenchmarkMetrics } from '../../types';
 
 export async function runQueryBenchmark(
   originalSql: string,
-  optimizedSql: string,
+  _optimizedSql: string,
   _indexDdl?: string
 ): Promise<BenchmarkMetrics> {
   // Simulate active multi-pass database query execution & timing
