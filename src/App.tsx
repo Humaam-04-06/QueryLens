@@ -4,12 +4,14 @@ import {
   IndexRecommendation, 
   QueryDialect, 
   SuggestedQuery, 
-  ExecutionPlanNode 
+  ExecutionPlanNode,
+  SchemaCatalog
 } from './types';
 import { defaultSchemas } from './schemas';
 import { Header } from './components/common/Header';
 import { SqlEditor } from './components/editor/SqlEditor';
 import { SchemaExplorerDrawer } from './components/schema/SchemaExplorerDrawer';
+import { CustomSchemaModal } from './components/schema/CustomSchemaModal';
 import { QueryAnalysisCard } from './components/analysis/QueryAnalysisCard';
 import { CostMeter } from './components/cost/CostMeter';
 import { QueryDiffViewer } from './components/rewrite/QueryDiffViewer';
@@ -32,6 +34,8 @@ WHERE Customers.Country = 'Pakistan';`);
   const [dialect, setDialect] = useState<QueryDialect>('postgresql');
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
   const [isSchemaOpen, setIsSchemaOpen] = useState<boolean>(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false);
+  const [schemas, setSchemas] = useState<SchemaCatalog[]>(defaultSchemas);
   const [activeSchemaId, setActiveSchemaId] = useState<string>('ecommerce');
 
   const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
@@ -40,7 +44,7 @@ WHERE Customers.Country = 'Pakistan';`);
   const [executionPlan, setExecutionPlan] = useState<ExecutionPlanNode | null>(null);
   const [isOptimizedPlanView, setIsOptimizedPlanView] = useState<boolean>(false);
 
-  const activeSchema = defaultSchemas.find((s) => s.id === activeSchemaId) || defaultSchemas[0];
+  const activeSchema = schemas.find((s) => s.id === activeSchemaId) || schemas[0];
 
   const handleAnalyze = () => {
     setIsAnalyzing(true);
@@ -61,7 +65,7 @@ WHERE Customers.Country = 'Pakistan';`);
     }, 300);
   };
 
-  // Run initial analysis automatically on mount
+  // Run initial analysis automatically on mount or schema change
   useEffect(() => {
     handleAnalyze();
   }, [activeSchemaId, dialect]);
@@ -114,8 +118,13 @@ WHERE Customers.Country = 'Pakistan';`);
 
   const handleExportReport = () => {
     if (!analysis) return;
-    const md = generateAuditReport(analysis, suggestedQuery, indexRecs);
+    const md = generateAuditReport(analysis, suggestedQuery, indexRecs, null, executionPlan);
     downloadReportFile(md);
+  };
+
+  const handleImportSchema = (newSchema: SchemaCatalog) => {
+    setSchemas((prev) => [...prev, newSchema]);
+    setActiveSchemaId(newSchema.id);
   };
 
   return (
@@ -197,9 +206,17 @@ WHERE Customers.Country = 'Pakistan';`);
       <SchemaExplorerDrawer
         isOpen={isSchemaOpen}
         onClose={() => setIsSchemaOpen(false)}
-        schemas={defaultSchemas}
+        schemas={schemas}
         activeSchemaId={activeSchemaId}
         onSelectSchema={setActiveSchemaId}
+        onOpenImportModal={() => setIsImportModalOpen(true)}
+      />
+
+      {/* Custom Schema Import Modal */}
+      <CustomSchemaModal
+        isOpen={isImportModalOpen}
+        onClose={() => setIsImportModalOpen(false)}
+        onImportSchema={handleImportSchema}
       />
     </div>
   );

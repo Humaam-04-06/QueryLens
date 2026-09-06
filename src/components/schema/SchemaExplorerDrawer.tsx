@@ -17,6 +17,7 @@ interface SchemaExplorerDrawerProps {
   schemas: SchemaCatalog[];
   activeSchemaId: string;
   onSelectSchema: (schemaId: string) => void;
+  onOpenImportModal: () => void;
 }
 
 export const SchemaExplorerDrawer: React.FC<SchemaExplorerDrawerProps> = ({
@@ -25,6 +26,7 @@ export const SchemaExplorerDrawer: React.FC<SchemaExplorerDrawerProps> = ({
   schemas,
   activeSchemaId,
   onSelectSchema,
+  onOpenImportModal,
 }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const currentSchema = schemas.find((s) => s.id === activeSchemaId) || schemas[0];
@@ -68,7 +70,15 @@ export const SchemaExplorerDrawer: React.FC<SchemaExplorerDrawerProps> = ({
       {/* Catalog Selector & Stats */}
       <div className="p-4 border-b border-slate-800/80 bg-dark-950/40 space-y-3">
         <div>
-          <label className="block text-xs font-medium text-slate-400 mb-1.5">Select Schema Catalog</label>
+          <div className="flex items-center justify-between mb-1.5">
+            <label className="text-xs font-medium text-slate-400">Select Schema Catalog</label>
+            <button
+              onClick={onOpenImportModal}
+              className="text-[11px] text-sky-400 hover:text-sky-300 flex items-center gap-1 font-semibold"
+            >
+              <span>+ Import DDL</span>
+            </button>
+          </div>
           <select
             value={activeSchemaId}
             onChange={(e) => onSelectSchema(e.target.value)}
