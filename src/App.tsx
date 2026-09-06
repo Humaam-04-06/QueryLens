@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { 
   AnalysisResult, 
   IndexRecommendation, 
@@ -9,6 +9,9 @@ import {
 } from './types';
 import { defaultSchemas } from './schemas';
 import { Header } from './components/common/Header';
+import { Footer } from './components/common/Footer';
+import { KeyboardShortcutsModal } from './components/common/KeyboardShortcutsModal';
+import { ToastContainer, ToastMessage } from './components/common/Toast';
 import { SqlEditor } from './components/editor/SqlEditor';
 import { SchemaExplorerDrawer } from './components/schema/SchemaExplorerDrawer';
 import { CustomSchemaModal } from './components/schema/CustomSchemaModal';
@@ -26,6 +29,7 @@ import { generateIndexRecommendations } from './engine/advisor/indexAdvisor';
 import { buildExecutionPlan } from './engine/planner/planBuilder';
 import { generateAuditReport, downloadReportFile } from './utils/exportReport';
 import { saveHistoryItem, getHistory, subscribeToHistory } from './services/historyStorage';
+import { copyShareUrl, parseShareableUrl } from './utils/shareUrl';
 
 export function App() {
   const [sql, setSql] = useState<string>(`SELECT *
@@ -39,6 +43,8 @@ WHERE Customers.Country = 'Pakistan';`);
   const [isSchemaOpen, setIsSchemaOpen] = useState<boolean>(false);
   const [isHistoryOpen, setIsHistoryOpen] = useState<boolean>(false);
   const [isBatchModalOpen, setIsBatchModalOpen] = useState<boolean>(false);
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState<boolean>(false);
+  const [toasts, setToasts] = useState<ToastMessage[]>([]);
   const [historyCount, setHistoryCount] = useState<number>(() => getHistory().length);
   const [isImportModalOpen, setIsImportModalOpen] = useState<boolean>(false);
   const [schemas, setSchemas] = useState<SchemaCatalog[]>(defaultSchemas);
@@ -51,6 +57,70 @@ WHERE Customers.Country = 'Pakistan';`);
   const [isOptimizedPlanView, setIsOptimizedPlanView] = useState<boolean>(false);
 
   const activeSchema = schemas.find((s) => s.id === activeSchemaId) || schemas[0];
+
+  // Toast notification dispatcher
+  const addToast = useCallback((title: string, description?: string, type: 'success' | 'info' = 'success') => {
+    const id = Date.now().toString() + Math.random().toString(36).substring(2, 6);
+    setToasts((prev) => [...prev, { id, title, description, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 3500);
+  }, []);
+
+  const removeToast = (id: string) => {
+    setToasts((prev) => prev.filter((t) => t.id !== id));
+  };
+
+  // Check URL permalink on mount
+  useEffect(() => {
+    const shared = parseShareableUrl();
+    if (shared) {
+      setSql(shared.sql);
+      setDialect(shared.dialect);
+      if (shared.schemaId) {
+        setActiveSchemaId(shared.schemaId);
+      }
+      addToast('Shared Query Loaded', 'Restored query parameters from permalink URL', 'info');
+    }
+  }, [addToast]);
+
+  // Global keyboard shortcuts listener
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Don't trigger modal shortcuts if typing in an active input or textarea
+      const target = e.target as HTMLElement;
+      const isInput = target.tagName === 'INPUT' || target.tagName === 'TEXTAREA';
+
+      if (e.key === '?' && !isInput) {
+        e.preventDefault();
+        setIsShortcutsOpen((prev) => !prev);
+      } else if (e.key === 'Escape') {
+        setIsShortcutsOpen(false);
+        setIsSchemaOpen(false);
+        setIsHistoryOpen(false);
+        setIsBatchModalOpen(false);
+        setIsImportModalOpen(false);
+      } else if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+        const key = e.key.toLowerCase();
+        if (key === 'h') {
+          e.preventDefault();
+          setIsHistoryOpen((prev) => !prev);
+        } else if (key === 's') {
+          e.preventDefault();
+          setIsSchemaOpen((prev) => !prev);
+        } else if (key === 'b') {
+          e.preventDefault();
+          setIsBatchModalOpen((prev) => !prev);
+        } else if (key === 'e') {
+          e.preventDefault();
+          handleExportReport();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Subscribe to history storage changes for reactive badge count
   useEffect(() => {
@@ -145,11 +215,18 @@ WHERE Customers.Country = 'Pakistan';`);
     if (!analysis) return;
     const md = generateAuditReport(analysis, suggestedQuery, indexRecs, null, executionPlan);
     downloadReportFile(md);
+    addToast('Audit Report Exported', 'Downloaded Markdown optimization audit report', 'info');
+  };
+
+  const handleShareQuery = async () => {
+    await copyShareUrl(sql, dialect, activeSchemaId);
+    addToast('Permalink Copied!', 'Shareable workbench link copied to clipboard', 'success');
   };
 
   const handleImportSchema = (newSchema: SchemaCatalog) => {
     setSchemas((prev) => [...prev, newSchema]);
     setActiveSchemaId(newSchema.id);
+    addToast('Schema Imported', `Catalog "${newSchema.name}" activated`, 'success');
   };
 
   const handleLoadQueryFromHistory = (
@@ -167,12 +244,14 @@ WHERE Customers.Country = 'Pakistan';`);
         setActiveSchemaId(found.id);
       }
     }
+    addToast('Query Restored', 'Restored query and settings from history', 'info');
   };
 
   const handleInspectBatchQuery = (inspectSql: string, inspectDialect: QueryDialect) => {
     setSql(inspectSql);
     setDialect(inspectDialect);
     setIsBatchModalOpen(false);
+    addToast('Batch Query Loaded', 'Loaded selected query into optimization workbench', 'info');
     setTimeout(handleAnalyze, 150);
   };
 
@@ -184,6 +263,8 @@ WHERE Customers.Country = 'Pakistan';`);
         onToggleHistory={() => setIsHistoryOpen(!isHistoryOpen)}
         onOpenBatchModal={() => setIsBatchModalOpen(true)}
         onExportReport={handleExportReport}
+        onOpenShortcuts={() => setIsShortcutsOpen(true)}
+        onShareQuery={handleShareQuery}
         isSchemaOpen={isSchemaOpen}
         isHistoryOpen={isHistoryOpen}
         activeSchemaName={activeSchema.name}
@@ -225,6 +306,7 @@ WHERE Customers.Country = 'Pakistan';`);
             suggested={suggestedQuery}
             onApply={(newSql) => {
               setSql(newSql);
+              addToast('Rewrite Applied', 'Updated query with selective column projections', 'success');
               setTimeout(handleAnalyze, 100);
             }}
           />
@@ -254,6 +336,14 @@ WHERE Customers.Country = 'Pakistan';`);
           optimizedSql={suggestedQuery?.optimizedSql || sql}
         />
       </main>
+
+      {/* Footer */}
+      <Footer
+        onOpenShortcuts={() => setIsShortcutsOpen(true)}
+        onOpenBatchModal={() => setIsBatchModalOpen(true)}
+        onToggleSchema={() => setIsSchemaOpen(true)}
+        onToggleHistory={() => setIsHistoryOpen(true)}
+      />
 
       {/* Schema Explorer Drawer */}
       <SchemaExplorerDrawer
@@ -286,6 +376,18 @@ WHERE Customers.Country = 'Pakistan';`);
         activeSchema={activeSchema}
         dialect={dialect}
         onInspectQueryInWorkbench={handleInspectBatchQuery}
+      />
+
+      {/* Keyboard Shortcuts Reference Modal */}
+      <KeyboardShortcutsModal
+        isOpen={isShortcutsOpen}
+        onClose={() => setIsShortcutsOpen(false)}
+      />
+
+      {/* Toast Notification Container */}
+      <ToastContainer
+        toasts={toasts}
+        onDismiss={removeToast}
       />
     </div>
   );
