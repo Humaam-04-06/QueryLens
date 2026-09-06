@@ -113,7 +113,16 @@ export interface BenchmarkMetrics {
   originalTimeMs: number;
   optimizedTimeMs: number;
   speedupMultiplier: number;
+  latencyReductionPct: number;
   rowsExaminedOriginal: number;
   rowsExaminedOptimized: number;
   rowsReturned: number;
+  originalPlanningTimeMs?: number;
+  optimizedPlanningTimeMs?: number;
+  bufferHitRatioOriginal?: number;
+  bufferHitRatioOptimized?: number;
+  memoryUsageKb?: {
+    original: number;
+    optimized: number;
+  };
 }
